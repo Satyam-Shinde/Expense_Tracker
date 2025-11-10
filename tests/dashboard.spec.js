@@ -1,6 +1,13 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { Builder, By, until } from "selenium-webdriver";
 import * as firefox from "selenium-webdriver/firefox.js";
 import { expect } from "chai";
+
+const token = process.env.VITE_USER_TOKEN;
+//const token = import.meta.env.VITE_USER_TOKEN;
+console.log(token);
 
 describe("Dashboard Tests", function () {
   this.timeout(40000);
@@ -16,10 +23,10 @@ describe("Dashboard Tests", function () {
 
     driver.sleep(1000);
 
-    // Set fake login token
-    await driver.executeScript(`
-      localStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MTFhOTRmNjYzYTRiNTFkYmUzOTc3MCIsImVtYWlsIjoic29maWM4NDk2NUBmYW5kb2UuY29tIiwiaWF0IjoxNzYyNzY2MDgwLCJleHAiOjE3NjMzNzA4ODB9.BUE-tsSelmLuF_3mag54za7KkgbjkkzDfS9v5DThvnw");
-    `);
+    await driver.executeScript(
+      `localStorage.setItem("token", arguments[0]);`,
+      token,
+    );
 
     await driver.navigate().refresh();
   });
