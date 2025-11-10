@@ -7,7 +7,7 @@ function AppContent() {
 
   if (loading) {
     return (
-      <div id='main-page' className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="text-white text-xl">Loading...</div>
       </div>
     );
