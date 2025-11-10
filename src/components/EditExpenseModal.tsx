@@ -43,7 +43,6 @@ export default function EditExpenseModal({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // preload expense values when modal opens
   useEffect(() => {
     if (expense) {
       setAmount(expense.amount.toString());
@@ -98,11 +97,20 @@ export default function EditExpenseModal({
   if (!isOpen || !expense) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div
+      data-testid="edit-expense-modal"
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+    >
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-slate-800">Edit Expense</h2>
+          <h2
+            data-testid="edit-expense-title"
+            className="text-2xl font-bold text-slate-800"
+          >
+            Edit Expense
+          </h2>
           <button
+            data-testid="edit-expense-close"
             onClick={onClose}
             className="text-slate-400 hover:text-slate-600 transition-colors"
           >
@@ -110,8 +118,11 @@ export default function EditExpenseModal({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Amount Field */}
+        <form
+          data-testid="edit-expense-form"
+          onSubmit={handleSubmit}
+          className="space-y-4"
+        >
           <div>
             <label
               htmlFor="edit-amount"
@@ -125,6 +136,7 @@ export default function EditExpenseModal({
               </span>
               <input
                 id="edit-amount"
+                data-testid="edit-amount"
                 type="number"
                 step="0.01"
                 min="0.01"
@@ -136,7 +148,6 @@ export default function EditExpenseModal({
             </div>
           </div>
 
-          {/* Category Field */}
           <div>
             <label
               htmlFor="edit-category"
@@ -146,6 +157,7 @@ export default function EditExpenseModal({
             </label>
             <select
               id="edit-category"
+              data-testid="edit-category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
@@ -158,7 +170,6 @@ export default function EditExpenseModal({
             </select>
           </div>
 
-          {/* Date Field */}
           <div>
             <label
               htmlFor="edit-date"
@@ -168,6 +179,7 @@ export default function EditExpenseModal({
             </label>
             <input
               id="edit-date"
+              data-testid="edit-date"
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
@@ -176,7 +188,6 @@ export default function EditExpenseModal({
             />
           </div>
 
-          {/* Description Field */}
           <div>
             <label
               htmlFor="edit-description"
@@ -186,6 +197,7 @@ export default function EditExpenseModal({
             </label>
             <textarea
               id="edit-description"
+              data-testid="edit-description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
@@ -195,7 +207,10 @@ export default function EditExpenseModal({
           </div>
 
           {error && (
-            <div className="p-3 rounded-lg bg-red-50 text-red-800 text-sm">
+            <div
+              data-testid="edit-error"
+              className="p-3 rounded-lg bg-red-50 text-red-800 text-sm"
+            >
               {error}
             </div>
           )}
@@ -203,6 +218,7 @@ export default function EditExpenseModal({
           <div className="flex gap-3 pt-2">
             <button
               type="button"
+              data-testid="edit-cancel"
               onClick={onClose}
               className="flex-1 px-4 py-3 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50 transition-colors"
             >
@@ -210,6 +226,7 @@ export default function EditExpenseModal({
             </button>
             <button
               type="submit"
+              data-testid="edit-submit"
               disabled={loading}
               className="flex-1 px-4 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >

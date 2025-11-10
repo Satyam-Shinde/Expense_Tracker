@@ -1,8 +1,8 @@
 import { Pencil, Trash2, Calendar, DollarSign } from "lucide-react";
 
 export interface Expense {
-  _id?: string;        // MongoDB document ID
-  id?: string;         // fallback if coming from frontend state
+  _id?: string;
+  id?: string;
   amount: number;
   category: string;
   description?: string;
@@ -51,9 +51,14 @@ export default function ExpenseList({
 
   if (!expenses || expenses.length === 0) {
     return (
-      <div className="text-center py-12">
-        <DollarSign className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-        <p className="text-slate-500 text-lg">No expenses yet</p>
+      <div data-testid="expense-empty" className="text-center py-12">
+        <DollarSign
+          data-testid="expense-empty-icon"
+          className="w-16 h-16 text-slate-300 mx-auto mb-4"
+        />
+        <p data-testid="expense-empty-text" className="text-slate-500 text-lg">
+          No expenses yet
+        </p>
         <p className="text-slate-400 text-sm mt-2">
           Click "Add Expense" to get started
         </p>
@@ -62,43 +67,58 @@ export default function ExpenseList({
   }
 
   return (
-    <div className="space-y-3">
-      {expenses.map((expense) => {
-        const id = expense._id || expense.id; // support both id styles
+    <div data-testid="expense-list" className="space-y-3">
+      {expenses.map((expense, index) => {
+        const id = expense._id || expense.id;
         return (
           <div
             key={id}
+            data-testid={`expense-item-${index}`}
             className="bg-white border border-slate-200 rounded-xl p-4 hover:shadow-md transition-shadow"
           >
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
+                <div
+                  className="flex items-center gap-3 mb-2"
+                  data-testid={`expense-header-${index}`}
+                >
                   <span
+                    data-testid={`expense-category-${index}`}
                     className={`px-3 py-1 rounded-full text-xs font-medium ${getCategoryColor(
                       expense.category
                     )}`}
                   >
                     {expense.category}
                   </span>
-                  <div className="flex items-center text-slate-500 text-sm">
+                  <div
+                    data-testid={`expense-date-${index}`}
+                    className="flex items-center text-slate-500 text-sm"
+                  >
                     <Calendar className="w-4 h-4 mr-1" />
                     {formatDate(expense.date)}
                   </div>
                 </div>
 
                 {expense.description && (
-                  <p className="text-slate-600 text-sm mb-2">
+                  <p
+                    data-testid={`expense-description-${index}`}
+                    className="text-slate-600 text-sm mb-2"
+                  >
                     {expense.description}
                   </p>
                 )}
 
-                <p className="text-2xl font-bold text-slate-800">
+                <p
+                  data-testid={`expense-amount-${index}`}
+                  className="text-2xl font-bold text-slate-800"
+                >
                   {formatAmount(expense.amount)}
                 </p>
               </div>
 
               <div className="flex gap-2 ml-4">
                 <button
+                  data-testid={`expense-edit-${index}`}
                   onClick={() => onEdit(expense)}
                   className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
                   title="Edit expense"
@@ -106,6 +126,7 @@ export default function ExpenseList({
                   <Pencil className="w-5 h-5" />
                 </button>
                 <button
+                  data-testid={`expense-delete-${index}`}
                   onClick={() => id && onDelete(id)}
                   className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                   title="Delete expense"

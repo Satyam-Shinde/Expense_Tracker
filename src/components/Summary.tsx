@@ -17,7 +17,6 @@ export default function Summary({ expenses }: SummaryProps) {
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
 
-  // Filter for current month’s expenses
   const monthlyExpenses = expenses.filter((expense) => {
     const expenseDate = new Date(expense.date);
     return (
@@ -26,13 +25,11 @@ export default function Summary({ expenses }: SummaryProps) {
     );
   });
 
-  // Total spent this month
   const totalMonthly = monthlyExpenses.reduce(
     (sum, expense) => sum + Number(expense.amount),
     0
   );
 
-  // Totals grouped by category
   const categoryTotals = expenses.reduce((acc, expense) => {
     const category = expense.category;
     acc[category] = (acc[category] || 0) + Number(expense.amount);
@@ -69,21 +66,38 @@ export default function Summary({ expenses }: SummaryProps) {
   });
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div
+      data-testid="summary-container"
+      className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8"
+    >
       {/* Monthly Summary Card */}
-      <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-6 text-white shadow-lg">
+      <div
+        data-testid="summary-monthly-card"
+        className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-6 text-white shadow-lg"
+      >
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="bg-white bg-opacity-20 p-2 rounded-lg">
               <Calendar className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-semibold">Monthly Total</h3>
+            <h3
+              data-testid="summary-monthly-title"
+              className="text-lg font-semibold"
+            >
+              Monthly Total
+            </h3>
           </div>
         </div>
-        <p className="text-4xl font-bold mb-2">{formatAmount(totalMonthly)}</p>
-        <p className="text-emerald-100 text-sm">{monthName}</p>
+
+        <p data-testid="summary-total-amount" className="text-4xl font-bold mb-2">
+          {formatAmount(totalMonthly)}
+        </p>
+        <p data-testid="summary-month-label" className="text-emerald-100 text-sm">
+          {monthName}
+        </p>
+
         <div className="mt-4 pt-4 border-t border-white border-opacity-20">
-          <p className="text-sm text-emerald-100">
+          <p data-testid="summary-transaction-count" className="text-sm text-emerald-100">
             {monthlyExpenses.length}{" "}
             {monthlyExpenses.length === 1 ? "transaction" : "transactions"} this
             month
@@ -92,28 +106,40 @@ export default function Summary({ expenses }: SummaryProps) {
       </div>
 
       {/* Top Categories Card */}
-      <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+      <div
+        data-testid="summary-category-card"
+        className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm"
+      >
         <div className="flex items-center gap-3 mb-6">
           <div className="bg-emerald-100 p-2 rounded-lg">
             <PieChart className="w-6 h-6 text-emerald-600" />
           </div>
-          <h3 className="text-lg font-semibold text-slate-800">
+          <h3
+            data-testid="summary-top-categories-title"
+            className="text-lg font-semibold text-slate-800"
+          >
             Top Categories
           </h3>
         </div>
 
         {sortedCategories.length > 0 ? (
-          <div className="space-y-4">
-            {sortedCategories.map(([category, amount]) => {
+          <div data-testid="summary-category-list" className="space-y-4">
+            {sortedCategories.map(([category, amount], index) => {
               const percentage =
                 totalMonthly > 0 ? (amount / totalMonthly) * 100 : 0;
               return (
-                <div key={category}>
+                <div
+                  key={category}
+                  data-testid={`summary-category-item-${index}`}
+                >
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium text-slate-700">
                       {category}
                     </span>
-                    <span className="text-sm font-bold text-slate-800">
+                    <span
+                      data-testid={`summary-category-amount-${index}`}
+                      className="text-sm font-bold text-slate-800"
+                    >
                       {formatAmount(amount)}
                     </span>
                   </div>
@@ -130,7 +156,10 @@ export default function Summary({ expenses }: SummaryProps) {
             })}
           </div>
         ) : (
-          <div className="text-center py-8">
+          <div
+            data-testid="summary-no-data"
+            className="text-center py-8"
+          >
             <TrendingUp className="w-12 h-12 text-slate-300 mx-auto mb-3" />
             <p className="text-slate-500 text-sm">No data to display yet</p>
           </div>

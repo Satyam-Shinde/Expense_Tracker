@@ -34,29 +34,33 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+    <div
+      data-testid="auth-container"
+      className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4"
+    >
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
-          <div className="flex items-center justify-center mb-8">
+        <div className="bg-white rounded-2xl shadow-2xl p-8" data-testid="auth-card">
+          <div className="flex items-center justify-center mb-8" data-testid="auth-logo">
             <div className="bg-emerald-500 p-3 rounded-xl">
               <Wallet className="w-8 h-8 text-white" />
             </div>
           </div>
 
-          <h1 className="text-3xl font-bold text-center text-slate-800 mb-2">
+          <h1 className="text-3xl font-bold text-center text-slate-800 mb-2" data-testid="auth-title">
             Expense Tracker
           </h1>
-          <p className="text-center text-slate-600 mb-8">
+          <p className="text-center text-slate-600 mb-8" data-testid="auth-subtitle">
             {isLogin ? 'Welcome back' : 'Create your account'}
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6" data-testid="auth-form">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
                 Email
               </label>
               <input
                 id="email"
+                data-testid="auth-email-input"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -72,6 +76,7 @@ export default function Auth() {
               </label>
               <input
                 id="password"
+                data-testid="auth-password-input"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -83,16 +88,20 @@ export default function Auth() {
             </div>
 
             {error && (
-              <div className={`p-4 rounded-lg text-sm ${error.includes('created')
-                  ? 'bg-emerald-50 text-emerald-800'
-                  : 'bg-red-50 text-red-800'
-                }`}>
+              <div
+                data-testid="auth-error-message"
+                className={`p-4 rounded-lg text-sm ${error.includes('created')
+                    ? 'bg-emerald-50 text-emerald-800'
+                    : 'bg-red-50 text-red-800'
+                  }`}
+              >
                 {error}
               </div>
             )}
 
             <button
               type="submit"
+              data-testid="auth-submit-button"
               disabled={loading}
               className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -102,6 +111,7 @@ export default function Auth() {
 
           <div className="mt-6 text-center">
             <button
+              data-testid="auth-toggle-button"
               onClick={() => {
                 setIsLogin(!isLogin);
                 setError('');
